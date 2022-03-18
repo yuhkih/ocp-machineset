@@ -1,0 +1,52 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  creationTimestamp: null
+  labels:
+    machine.openshift.io/cluster-api-cluster: ocp48-6vldl
+  name: ocp48-6vldl-infra 
+  namespace: openshift-machine-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: ocp48-6vldl
+      machine.openshift.io/cluster-api-machineset: ocp48-6vldl-infra 
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        machine.openshift.io/cluster-api-cluster: ocp48-6vldl 
+        machine.openshift.io/cluster-api-machine-role: infra 
+        machine.openshift.io/cluster-api-machine-type: infra 
+        machine.openshift.io/cluster-api-machineset: ocp48-6vldl-infra 
+    spec:
+      metadata:
+        creationTimestamp: null
+        labels:
+          node-role.kubernetes.io/infra: "" 
+      providerSpec:
+        value:
+          apiVersion: vsphereprovider.openshift.io/v1beta1
+          credentialsSecret:
+            name: vsphere-cloud-credentials
+          diskGiB: 120
+          kind: VSphereMachineProviderSpec
+          memoryMiB: 16384
+          metadata:
+            creationTimestamp: null
+          network:
+            devices:
+            - networkName: yhanada-int 
+          numCPUs: 8
+          numCoresPerSocket: 1
+          snapshot: ""
+          template: ocp48-6vldl-rhcos 
+          userDataSecret:
+            name: worker-user-data
+          workspace:
+            datacenter: NRT
+            datastore: vsanDatastore 
+            folder: /NRT/vm/ocp48-6vldl 
+            resourcepool: /NRT/host/Cluster/Resources 
+            server: vcenter.adp.nrt.redhat.com 
